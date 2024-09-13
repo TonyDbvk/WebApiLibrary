@@ -19,7 +19,6 @@ namespace Library.API.Controllers
             _userService = userService;
         }
 
-        // POST: api/users/register
         [HttpPost("register")]
         public async Task<ActionResult<Guid>> Register([FromBody] RegisterRequest request)
         {
@@ -39,43 +38,6 @@ namespace Library.API.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
-
-
-
-        //// POST: api/users/authenticate
-        //[HttpPost("authenticate")]
-        //public async Task<ActionResult> Authenticate([FromBody] AuthenticateRequest request)
-        //{
-        //    if (request == null)
-        //    {
-        //        return BadRequest("Invalid authentication request.");
-        //    }
-
-        //    try
-        //    {
-        //        var isAuthenticated = await _userService.AuthenticateUserAsync(request.Username, request.Password);
-        //        if (isAuthenticated)
-        //        {
-        //            return Ok();
-        //        }
-        //        else
-        //        {
-        //            Console.WriteLine("un");
-        //            return Unauthorized();
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine("---------------");
-        //        Console.WriteLine(ex.Message + "  " + ex.Source);
-        //        Console.WriteLine("---------------");
-        //        return StatusCode(500, new { message = ex.Message }); // Возвращаем сообщение об ошибке
-        //    }
-        //}
-
-
-        // GET: api/users/{id}
-
 
         [HttpPost("authenticate")]
         public async Task<ActionResult> Authenticate([FromBody] AuthenticateRequest request)
@@ -104,7 +66,7 @@ namespace Library.API.Controllers
             var user = await _userService.GetUserByIdAsync(id);
             if (user == null)
             {
-                return NotFound(); // 404 Not Found если пользователь не найден
+                return NotFound(); // 404
             }
             return Ok(user);
         }
@@ -115,17 +77,17 @@ namespace Library.API.Controllers
         {
             if (id != user.Id)
             {
-                return BadRequest("ID mismatch."); // 400 Bad Request если ID в URL не совпадает с ID в теле
+                return BadRequest("ID mismatch."); // 400 
             }
 
             var result = await _userService.UpdateUserAsync(user);
             if (result)
             {
-                return NoContent(); // 204 No Content, что указывает на успешное обновление
+                return NoContent(); // 204
             }
             else
             {
-                return NotFound(); // 404 Not Found если пользователь не найден
+                return NotFound(); // 404
             }
         }
 
@@ -138,11 +100,11 @@ namespace Library.API.Controllers
             var result = await _userService.DeleteUserAsync(id);
             if (result)
             {
-                return NoContent(); // 204 No Content, что указывает на успешное удаление
+                return NoContent(); // 204
             }
             else
             {
-                return NotFound(); // 404 Not Found если пользователь не найден
+                return NotFound(); // 404 
             }
         }
     }
@@ -153,7 +115,7 @@ namespace Library.API.Controllers
         public string Password { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string Email { get; set; } // Добавлено поле Email       
+        public string Email { get; set; }     
     }
 
 
