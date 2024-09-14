@@ -21,6 +21,9 @@ namespace Library.DataAccess.Configuration
                    .IsRequired()
                    .HasMaxLength(13);
 
+            builder.HasIndex(b => b.ISBN)
+                .IsUnique();
+
             // Конфигурация связи "многие к одному" без указания навигационного свойства
             builder.HasOne<Author>() // Указываем тип Author, но не навигационное свойство
                    .WithMany(a => a.Books)

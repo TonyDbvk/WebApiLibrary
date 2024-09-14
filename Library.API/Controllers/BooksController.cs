@@ -22,6 +22,10 @@ namespace Library.API.Controllers
         public async Task<ActionResult<List<Book>>> GetAllBooks()
         {
             var books = await _booksService.GetAllBooks();
+            foreach (var item in books)
+            {
+                Console.WriteLine(item.Title);
+            }
             return Ok(books);
         }
 

@@ -66,15 +66,6 @@ namespace Library.Application.Services
 
         public async Task<string> GenerateJwtTokenAsync(string username, string password)
         {
-            // Проверяем учетные данные пользователя
-            //var result = await _signInManager.PasswordSignInAsync(username, password, isPersistent: false, lockoutOnFailure: false);
-            //if (!result.Succeeded)
-            //{
-            //    throw new Exception("Invalid credentials");
-            //}
-
-
-
             var user = await _userManager.FindByNameAsync(username);
             if (user == null || !await _userManager.CheckPasswordAsync(user, password))
             {
@@ -96,7 +87,7 @@ namespace Library.Application.Services
                 audience: AuthOptions.AUDIENCE,
             
                 claims: claims,
-                expires: DateTime.UtcNow.Add(TimeSpan.FromSeconds(10)),
+                expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(10)),
                 signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
 
             // Кодируем токен в строку
