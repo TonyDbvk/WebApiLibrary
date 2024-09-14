@@ -40,10 +40,10 @@ namespace Library.DataAccess.Configuration
                    .IsRequired();
 
             // Установка связи один ко многим для BorrowedBookInstances
-            builder.HasMany<BookInstance>()
-                   .WithOne()
-                   .HasForeignKey(bi => bi.UserId)
-                   .OnDelete(DeleteBehavior.SetNull); // При удалении пользователя UserId будет установлен в null
+            //builder.HasMany<BookInstance>()
+            //       .WithOne()
+            //       .HasForeignKey(bi => bi.UserId)
+            //       .OnDelete(DeleteBehavior.SetNull); // При удалении пользователя UserId будет установлен в null
         }
     }
 }

@@ -12,7 +12,8 @@ namespace Library.DataAccess
         public DbSet<Book> Books { get; set; }
         public DbSet<Author> Authors { get; set; }
         public DbSet<User> Users { get; set; } // Добавляем DbSet<User>
-        public DbSet<BookInstance> BookInstances { get; set; } // Добавляем DbSet<BookInstance>
+
+        //public DbSet<BookInstance> BookInstances { get; set; } // Добавляем DbSet<BookInstance>
 
         public LibraryContext(DbContextOptions<LibraryContext> options) : base(options)
         {
@@ -23,7 +24,7 @@ namespace Library.DataAccess
             modelBuilder.ApplyConfiguration(new BookConfiguration());
             modelBuilder.ApplyConfiguration(new AuthorConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
-            modelBuilder.ApplyConfiguration(new BookInstanceConfiguration());
+            //modelBuilder.ApplyConfiguration(new BookInstanceConfiguration());
             modelBuilder.Entity<IdentityUserLogin<Guid>>().HasNoKey();
             modelBuilder.Entity<IdentityUserRole<Guid>>().HasNoKey();
             modelBuilder.Entity<IdentityUserToken<Guid>>().HasNoKey();
