@@ -1,8 +1,11 @@
-﻿using Library.Domain.Models;
+﻿using AutoMapper;
+using Library.API.DTOs.AuthorDtos;
+using Library.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace Library.API.Controllers
 {
@@ -11,28 +14,20 @@ namespace Library.API.Controllers
     public class AuthorsController : ControllerBase
     {
         private readonly IAuthorService _authorService;
-
-        public AuthorsController(IAuthorService authorService)
+        private readonly IMapper _mapper;
+        public AuthorsController(IAuthorService authorService,IMapper mapper)
         {
             _authorService = authorService;
+            _mapper = mapper;
         }
 
         // GET: api/authors
         [HttpGet]
         public async Task<ActionResult<List<Author>>> GetAllAuthors()
         {
-            
             var authors = await _authorService.GetAuthors();
-
-            foreach (var author in authors)
-            {
-                Console.WriteLine(author.FirstName);
-                foreach (var book in author.Books)
-                {
-                    Console.WriteLine(book.Title);
-                }
-            }
-            return Ok(authors);
+            var result = _mapper.Map<List<AuthorReadDto>>(authors);
+            return Ok(result);
         }
 
         // GET: api/authors/{id}
@@ -44,21 +39,27 @@ namespace Library.API.Controllers
             {
                 return NotFound(); // 404 Not Found если автор не найден
             }
-            return Ok(author);
+            var result = _mapper.Map<AuthorReadDto>(author);
+            return Ok(result);
         }
 
         // POST: api/authors
         [HttpPost]
-        public async Task<ActionResult<Guid>> AddAuthor([FromBody] Author author)
+        public async Task<ActionResult<Guid>> AddAuthor([FromBody] AuthorCreateDto authorCreateDto)
         {
-            if (author == null)
+            if (authorCreateDto == null)
             {
-                return BadRequest("Author cannot be null."); // 400 Bad Request если автор null
+                return BadRequest("Author cannot be null."); // 400 Bad Request, если автор null
             }
 
+            var author = _mapper.Map<Author>(authorCreateDto); // Маппинг DTO в сущность Author
+            Console.WriteLine($"Контроллер {author.Id} {author.FirstName}");
+            // Допустим, ваш сервис сохраняет сущность в базе данных и возвращает созданный Id
             var id = await _authorService.AddAuthor(author);
-            return CreatedAtAction(nameof(GetAuthorById), new { id = id }, id); // 201 Created с местоположением нового ресурса
+
+            return CreatedAtAction(nameof(GetAuthorById), new { id = id }, id);
         }
+
 
         // PUT: api/authors/{id}
         [HttpPut("{id}")]

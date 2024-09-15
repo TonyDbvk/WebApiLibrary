@@ -1,5 +1,6 @@
 using AutoMapper;
-using Library.API.DTOs;
+using Library.API.DTOs.AuthorDtos;
+using Library.API.DTOs.BookDtos;
 using Library.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -26,7 +27,7 @@ namespace Library.API.Controllers
         {
             var books = await _booksService.GetAllBooks();
 
-            var result = _mapper.Map<List<BookDto>>(books);
+            var result = _mapper.Map<List<BookReadDto>>(books);
             return Ok(result);
         }
 
@@ -56,14 +57,15 @@ namespace Library.API.Controllers
 
         // POST api/books
         [HttpPost]
-        public async Task<ActionResult<Guid>> AddBook([FromBody] Book book)
+        public async Task<ActionResult<Guid>> AddBook([FromBody] BookCreateDto bookCreateDto)
         {
-            Console.WriteLine(book.Id);
-            if (book == null)
+            if (bookCreateDto == null)
             {
                 return BadRequest("Book cannot be null."); // 400 Bad Request if the book is null
             }
-            Console.WriteLine(book.Title);
+
+            var book = _mapper.Map<Book>(bookCreateDto); // Маппинг DTO в сущность Author
+            Console.WriteLine($"Контроллер {book.Id} {book.Title}");
             var id = await _booksService.AddBook(book);
             return CreatedAtAction(nameof(GetBook), new { id = id }, id); // 201 Created with location of the new resource
         }

@@ -17,7 +17,7 @@ namespace Library.Domain.Models
         public string ImageUrl { get; set; }
         public int AvailableCopies { get; set; }
 
-        public Author Author { get; set; }
+        public Author? Author { get; set; }
 
     }
 

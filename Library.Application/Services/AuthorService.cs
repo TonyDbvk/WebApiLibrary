@@ -28,6 +28,7 @@ public class AuthorService : IAuthorService
 
     public async Task<Guid> AddAuthor(Author author)
     {
+        Console.WriteLine($"Сервис {author.Id} {author.FirstName}");
         return await _authorRepository.Add(author);
     }
 
