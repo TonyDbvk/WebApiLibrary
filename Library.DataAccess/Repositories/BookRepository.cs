@@ -41,7 +41,9 @@ namespace Library.DataAccess.Repositories
 
         public async Task<List<Book>> GetAll()
         {
-            return await _context.Books.ToListAsync();
+            return await _context.Books
+                        .Include(b => b.Author) // Включение данных об авторе
+                        .ToListAsync();
         }
 
         public async Task<Book> GetById(Guid id)

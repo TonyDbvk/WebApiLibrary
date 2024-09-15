@@ -1,4 +1,5 @@
 
+using Library.API.MappingProfiles;
 using Library.Application.Interfaces;
 using Library.Application.Services;
 using Library.Application.Services.Auth;
@@ -57,7 +58,7 @@ builder.Services.AddIdentityCore<User>()
     .AddDefaultTokenProviders();
 
 
-
+builder.Services.AddAutoMapper(typeof(BookMappingProfile));
 builder.Services.AddScoped<IBooksService, BooksService>();
 builder.Services.AddScoped<IAuthorService, AuthorService>();
 builder.Services.AddScoped<IUserRepository,UserRepository>();

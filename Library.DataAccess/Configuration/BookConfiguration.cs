@@ -22,10 +22,10 @@ namespace Library.DataAccess.Configuration
                    .HasMaxLength(13);
 
             builder.HasIndex(b => b.ISBN)
-                .IsUnique();
+                   .IsUnique();
 
-            // Конфигурация связи "многие к одному" без указания навигационного свойства
-            builder.HasOne<Author>() // Указываем тип Author, но не навигационное свойство
+            // Конфигурация связи "многие к одному" с автором
+            builder.HasOne(b => b.Author) // Указываем навигационное свойство
                    .WithMany(a => a.Books)
                    .HasForeignKey(b => b.AuthorId);
         }

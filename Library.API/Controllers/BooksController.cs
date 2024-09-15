@@ -1,3 +1,5 @@
+using AutoMapper;
+using Library.API.DTOs;
 using Library.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,10 +13,11 @@ namespace Library.API.Controllers
     public class BooksController : ControllerBase
     {
         private readonly IBooksService _booksService;
-
-        public BooksController(IBooksService booksService)
+        private readonly IMapper _mapper;
+        public BooksController(IBooksService booksService,IMapper mapper)
         {
             _booksService = booksService;
+            _mapper = mapper;
         }
 
         // GET api/books
@@ -22,11 +25,9 @@ namespace Library.API.Controllers
         public async Task<ActionResult<List<Book>>> GetAllBooks()
         {
             var books = await _booksService.GetAllBooks();
-            foreach (var item in books)
-            {
-                Console.WriteLine(item.Title);
-            }
-            return Ok(books);
+
+            var result = _mapper.Map<List<BookDto>>(books);
+            return Ok(result);
         }
 
         // GET api/books/{id}

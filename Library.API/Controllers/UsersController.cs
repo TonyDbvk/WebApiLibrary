@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using Library.API.DTOs;
 
 namespace Library.API.Controllers
 {
@@ -109,19 +110,4 @@ namespace Library.API.Controllers
         }
     }
 
-    public class RegisterRequest
-    {
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; set; }     
-    }
-
-
-    public class AuthenticateRequest
-    {
-        public string Username { get; set; }
-        public string Password { get; set; }
-    }
 }

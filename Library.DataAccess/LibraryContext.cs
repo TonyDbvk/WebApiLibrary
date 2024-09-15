@@ -32,6 +32,8 @@ namespace Library.DataAccess
             {
                 entity.ToTable("Users"); // Укажите правильное имя таблицы
             });
+
+
         }
     }
 

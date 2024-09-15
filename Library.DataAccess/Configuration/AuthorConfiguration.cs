@@ -25,9 +25,9 @@ namespace Library.DataAccess.Configuration
             builder.Property(a => a.Country)
                    .HasMaxLength(100);
 
-            // Установка связи "один ко многим" с книгами, но без указания навигационного свойства
+            // Установка связи "один ко многим" с книгами
             builder.HasMany(a => a.Books)
-                   .WithOne() // Убираем указание на навигационное свойство в Book
+                   .WithOne(b => b.Author) // Указываем навигационное свойство
                    .HasForeignKey(b => b.AuthorId);
         }
     }
