@@ -50,7 +50,7 @@ namespace Library.DataAccess.Repositories
             existingUser.LastName = user.LastName;
             existingUser.Email = user.Email;
             existingUser.UserName = user.UserName;
-            existingUser.BorrowedBookIds = user.BorrowedBookIds;
+            existingUser.BookInstances = user.BookInstances;
 
             await _context.SaveChangesAsync();
             return true;

@@ -13,6 +13,6 @@ namespace Library.Domain.Models
         public string FirstName { get; set; } // Имя
         public string LastName { get; set; } // Фамилия
 
-        public List<Guid> BorrowedBookIds { get; set; } = new List<Guid>();
+        public ICollection<BookInstance> BookInstances { get; set; } = new List<BookInstance>();
     }
 }
