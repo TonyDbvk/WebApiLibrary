@@ -59,6 +59,13 @@ namespace Library.API.Controllers
                 return Unauthorized(new { message = ex.Message });
             }
         }
+        [HttpGet]
+        public async Task<ActionResult<List<User>>> GetAllUsers() {
+            var users = await _userService.GetAllUsersAsync();
+            if (users == null ) return NotFound();
+
+            return Ok(users);   
+        }
 
 
         [HttpGet("{id}")]

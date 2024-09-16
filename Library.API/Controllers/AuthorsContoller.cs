@@ -62,19 +62,16 @@ namespace Library.API.Controllers
 
        
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateAuthor(Guid id, [FromBody] Author author)
+        public async Task<ActionResult> UpdateAuthor(Guid id, [FromBody] AuthorCreateDto authorCreateDto)
         {
-            if (id != author.Id)
-            {
-                return BadRequest("ID mismatch."); 
-            }
 
             var existingAuthor = await _authorService.GetAuthor(id);
             if (existingAuthor == null)
             {
                 return NotFound();
             }
-
+            var author = _mapper.Map<Author>(authorCreateDto);
+            author.Id = existingAuthor.Id;
             await _authorService.UpdateAuthor(author);
             return NoContent();
         }

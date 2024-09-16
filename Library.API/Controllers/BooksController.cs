@@ -53,7 +53,8 @@ namespace Library.API.Controllers
             {
                 return NotFound();
             }
-            return Ok(book);
+            var result = _mapper.Map<BookReadDto>(book);
+            return Ok(result);
         }
 
        
@@ -73,19 +74,16 @@ namespace Library.API.Controllers
 
         // PUT api/books/{id}
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateBook(Guid id, [FromBody] Book book)
+        public async Task<ActionResult> UpdateBook(Guid id, [FromBody] BookCreateDto bookCreateDto)
         {
-            if (id != book.Id)
-            {
-                return BadRequest("ID mismatch."); 
-            }
 
             var existingBook = await _booksService.GetBook(id);
             if (existingBook == null)
             {
                 return NotFound();
             }
-
+            var book = _mapper.Map<Book>(bookCreateDto);
+            book.Id = existingBook.Id;
             await _booksService.UpdateBook(book);
             return NoContent(); 
         }
