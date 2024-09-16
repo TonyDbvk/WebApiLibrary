@@ -26,7 +26,6 @@ namespace Library.DataAccess.Repositories
             return book.Id;
         }
 
-
         public async Task<List<Book>> GetAll()
         {
             return await _context.Books

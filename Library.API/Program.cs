@@ -60,8 +60,10 @@ builder.Services.AddIdentityCore<User>()
 
 builder.Services.AddAutoMapper(typeof(BookMappingProfile));
 builder.Services.AddScoped<IBooksService, BooksService>();
+builder.Services.AddScoped<IBookInstanceService, BookInstanceService>();
 builder.Services.AddScoped<IAuthorService, AuthorService>();
 builder.Services.AddScoped<IUserRepository,UserRepository>();
+builder.Services.AddScoped<IBookInstanceRepository, BookInstanceRepository>();
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<IUserService,UserService>();

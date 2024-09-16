@@ -17,7 +17,7 @@ namespace Library.DataAccess.Repositories
 
         public async Task<List<User>> GetAllAsync()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Users.Include(u=> u.BookInstances).ToListAsync();
         }
 
         public async Task<User> GetByIdAsync(Guid id)

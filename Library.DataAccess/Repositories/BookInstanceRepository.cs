@@ -2,13 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Library.DataAccess.Repositories
 {
-    internal class BookInstanceRepository
+    public class BookInstanceRepository : IBookInstanceRepository
     {
         private readonly LibraryContext _context;
 
@@ -16,34 +14,26 @@ namespace Library.DataAccess.Repositories
         {
             _context = context;
         }
-        public async Task<List<Book>> GetAll()
+
+        // Получение всех экземпляров книг с включением информации о книге и пользователе
+        public async Task<List<BookInstance>> GetAll()
         {
             return await _context.BookInstances
                         .Include(b => b.Book)
+                        .Include(b => b.User)
                         .ToListAsync();
         }
-        public async Task<Book> GetById(Guid id)
+
+        // Получение экземпляра книги по ID с включением информации о книге и пользователе
+        public async Task<BookInstance> GetById(Guid id)
         {
-            return await _context.Books.Include(b => b.Author).FirstOrDefaultAsync(b => b.Id == id);
+            return await _context.BookInstances
+                        .Include(b => b.Book)
+                        .Include(b => b.User)
+                        .FirstOrDefaultAsync(b => b.Id == id);
         }
 
-        public async Task<Book> GetByISBN(string isbn)
-        {
-            return await _context.Books.FirstOrDefaultAsync(b => b.ISBN == isbn);
-        }
-
-        public async Task<Guid> Update(Book book)
-        {
-            var existingBook = await _context.Books.FindAsync(book.Id);
-            if (existingBook == null)
-            {
-                throw new ArgumentException("Book not found.");
-            }
-
-            _context.Entry(existingBook).CurrentValues.SetValues(book);
-            await _context.SaveChangesAsync();
-            return book.Id;
-        }
+        // Добавление нового экземпляра книги
         public async Task<Guid> Add(BookInstance bookInstance)
         {
             _context.BookInstances.Add(bookInstance);
@@ -51,29 +41,32 @@ namespace Library.DataAccess.Repositories
             return bookInstance.Id;
         }
 
+        // Обновление экземпляра книги
         public async Task<Guid> Update(BookInstance bookInstance)
         {
-            _context.BookInstances.Add(bookInstance);
+            var existingBookInstance = await _context.BookInstances.FindAsync(bookInstance.Id);
+            if (existingBookInstance == null)
+            {
+                throw new ArgumentException("BookInstance not found.");
+            }
+
+            _context.Entry(existingBookInstance).CurrentValues.SetValues(bookInstance);
             await _context.SaveChangesAsync();
             return bookInstance.Id;
         }
 
-
+        // Удаление экземпляра книги
         public async Task<Guid> Delete(Guid id)
         {
             var bookInstance = await _context.BookInstances.FindAsync(id);
             if (bookInstance == null)
             {
-                throw new ArgumentException("BokInstance not found.");
+                throw new ArgumentException("BookInstance not found.");
             }
 
             _context.BookInstances.Remove(bookInstance);
             await _context.SaveChangesAsync();
             return id;
         }
-
-       
-
-
     }
 }

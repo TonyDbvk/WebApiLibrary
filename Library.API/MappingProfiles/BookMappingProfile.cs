@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Library.API.DTOs.AuthorDtos;
 using Library.API.DTOs.BookDtos;
+using Library.API.DTOs.BookInstanceDtos;
 using Library.Domain.Models;
 
 namespace Library.API.MappingProfiles
@@ -25,6 +26,13 @@ namespace Library.API.MappingProfiles
                            .AfterMap((src, dest) => dest.Id = Guid.NewGuid()) // Устанавливаем новый ID
                            .ForMember(dest => dest.Books, opt => opt.MapFrom(src => new List<Book>())); // Инициализируем пустой список книг
 
+            CreateMap<BookInstance, BookInstanceReadDto>()
+         .ForMember(dest => dest.BookTitle, opt => opt.MapFrom(src => src.Book.Title))
+         .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.FirstName + " " + src.User.LastName));
+
+            // Преобразование из BookInstanceCreateDto в BookInstance
+            CreateMap<BookInstanceCreateDto, BookInstance>();
+            CreateMap<BookInstanceUpdateDto, BookInstance>();
 
         }
     }
