@@ -8,20 +8,18 @@ namespace Library.DataAccess.Configuration
     {
         public void Configure(EntityTypeBuilder<BookInstance> builder)
         {
-            // Установка ключа
+
             builder.HasKey(bi => bi.Id);
 
-            // Установка связи "многие к одному" с книгой
             builder.HasOne(bi => bi.Book)
-                   .WithMany() // No navigation property in Book
+                   .WithMany() 
                    .HasForeignKey(bi => bi.BookId)
-                   .OnDelete(DeleteBehavior.Restrict); // Предотвращаем удаление книги, пока она взята
+                   .OnDelete(DeleteBehavior.Restrict); 
 
-            // Установка связи "многие к одному" с пользователем
             builder.HasOne(bi => bi.User)
                    .WithMany(u => u.BookInstances)
                    .HasForeignKey(bi => bi.UserId)
-                   .OnDelete(DeleteBehavior.Restrict); // Предотвращаем удаление пользователя, пока у него есть книги
+                   .OnDelete(DeleteBehavior.Restrict); 
         }
     }
 }

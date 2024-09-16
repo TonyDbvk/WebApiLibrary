@@ -14,7 +14,6 @@ namespace Library.Domain.Models
         public DateOnly DateOfBirth { get; set; }
         public string Country { get; set; }
 
-        // Список книг, связанных с автором
         public ICollection<Book> Books { get; set; }
     }
 

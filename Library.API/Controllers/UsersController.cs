@@ -67,7 +67,7 @@ namespace Library.API.Controllers
             var user = await _userService.GetUserByIdAsync(id);
             if (user == null)
             {
-                return NotFound(); // 404
+                return NotFound(); 
             }
             return Ok(user);
         }
@@ -105,7 +105,7 @@ namespace Library.API.Controllers
             }
             else
             {
-                return NotFound(); // 404 
+                return NotFound(); 
             }
         }
     }

@@ -42,13 +42,13 @@ namespace Library.DataAccess.Repositories
         public async Task<List<Book>> GetAll()
         {
             return await _context.Books
-                        .Include(b => b.Author) // Включение данных об авторе
+                        .Include(b => b.Author) // включение данных об авторе
                         .ToListAsync();
         }
 
         public async Task<Book> GetById(Guid id)
         {
-            return await _context.Books.FirstOrDefaultAsync(b => b.Id == id);
+            return await _context.Books.Include(b => b.Author).FirstOrDefaultAsync(b => b.Id == id);
         }
 
         public async Task<Book> GetByISBN(string isbn)

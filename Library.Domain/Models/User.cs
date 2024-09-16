@@ -7,11 +7,11 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Library.Domain.Models
 {
-    public class User : IdentityUser<Guid> // Наследуемся от IdentityUser и используем Guid как тип идентификатора
+    public class User : IdentityUser<Guid> 
     {
         
-        public string FirstName { get; set; } // Имя
-        public string LastName { get; set; } // Фамилия
+        public string FirstName { get; set; } 
+        public string LastName { get; set; } 
 
         public ICollection<BookInstance> BookInstances { get; set; } = new List<BookInstance>();
     }

@@ -10,7 +10,6 @@ namespace Library.API.DTOs.AuthorDtos
         public DateOnly DateOfBirth { get; set; }
         public string Country { get; set; }
 
-        // Список книг, связанных с автором
         public List<string> Books { get; set; }
     }
 

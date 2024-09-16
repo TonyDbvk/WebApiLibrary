@@ -59,7 +59,6 @@ namespace Library.Application.Services
             }
             else
             {
-                // Обработка ошибок
                 throw new Exception("User registration failed: " + string.Join(", ", result.Errors.Select(e => e.Description)));
             }
         }

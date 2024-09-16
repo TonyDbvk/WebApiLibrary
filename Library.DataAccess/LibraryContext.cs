@@ -11,11 +11,11 @@ namespace Library.DataAccess
     {
         public DbSet<Book> Books { get; set; }
         public DbSet<Author> Authors { get; set; }
-        public DbSet<User> Users { get; set; } // Добавляем DbSet<User>
+        public DbSet<User> Users { get; set; } 
 
         public DbSet<BookInstance> BookInstances { get; set; }
 
-        //public DbSet<BookInstance> BookInstances { get; set; } // Добавляем DbSet<BookInstance>
+
 
         public LibraryContext(DbContextOptions<LibraryContext> options) : base(options)
         {
@@ -32,7 +32,7 @@ namespace Library.DataAccess
             modelBuilder.Entity<IdentityUserToken<Guid>>().HasNoKey();
             modelBuilder.Entity<User>(entity =>
             {
-                entity.ToTable("Users"); // Укажите правильное имя таблицы
+                entity.ToTable("Users");
             });
 
 

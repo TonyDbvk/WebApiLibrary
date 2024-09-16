@@ -11,9 +11,9 @@ namespace Library.API.Controllers
     [Route("api/[controller]")]
     public class ProtectedController : ControllerBase
     {
-        // GET: api/protected
+
         [HttpGet]
-        // Доступен только авторизованным пользователям
+
         public ActionResult<string> GetProtectedData()
         {
             return DateTime.Now.ToString();

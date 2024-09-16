@@ -21,7 +21,7 @@ namespace Library.API.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/authors
+        //api/authors
         [HttpGet]
         public async Task<ActionResult<List<Author>>> GetAllAuthors()
         {
@@ -30,68 +30,67 @@ namespace Library.API.Controllers
             return Ok(result);
         }
 
-        // GET: api/authors/{id}
         [HttpGet("{id}")]
         public async Task<ActionResult<Author>> GetAuthorById(Guid id)
         {
             var author = await _authorService.GetAuthor(id);
             if (author == null)
             {
-                return NotFound(); // 404 Not Found если автор не найден
+                return NotFound(); 
             }
             var result = _mapper.Map<AuthorReadDto>(author);
             return Ok(result);
         }
 
-        // POST: api/authors
+        
         [HttpPost]
         public async Task<ActionResult<Guid>> AddAuthor([FromBody] AuthorCreateDto authorCreateDto)
         {
             if (authorCreateDto == null)
             {
-                return BadRequest("Author cannot be null."); // 400 Bad Request, если автор null
+                return BadRequest("Author cannot be null."); 
             }
 
-            var author = _mapper.Map<Author>(authorCreateDto); // Маппинг DTO в сущность Author
+            var author = _mapper.Map<Author>(authorCreateDto); 
             Console.WriteLine($"Контроллер {author.Id} {author.FirstName}");
-            // Допустим, ваш сервис сохраняет сущность в базе данных и возвращает созданный Id
+         
             var id = await _authorService.AddAuthor(author);
 
             return CreatedAtAction(nameof(GetAuthorById), new { id = id }, id);
         }
 
 
-        // PUT: api/authors/{id}
+       
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateAuthor(Guid id, [FromBody] Author author)
         {
             if (id != author.Id)
             {
-                return BadRequest("ID mismatch."); // 400 Bad Request если ID в URL не совпадает с ID в теле
+                return BadRequest("ID mismatch."); 
             }
 
             var existingAuthor = await _authorService.GetAuthor(id);
             if (existingAuthor == null)
             {
-                return NotFound(); // 404 Not Found если автор не существует
+                return NotFound();
             }
 
             await _authorService.UpdateAuthor(author);
-            return NoContent(); // 204 No Content, что указывает на успешное обновление
+            return NoContent();
         }
 
-        // DELETE: api/authors/{id}
+ 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAuthor(Guid id)
         {
             var existingAuthor = await _authorService.GetAuthor(id);
             if (existingAuthor == null)
             {
-                return NotFound(); // 404 Not Found если автор не существует
+                return NotFound();
             }
 
             await _authorService.DeleteAuthor(id);
-            return NoContent(); // 204 No Content, что указывает на успешное удаление
+            return NoContent(); 
         }
     }
 }

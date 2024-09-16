@@ -8,15 +8,13 @@ namespace Library.DataAccess.Configuration
     {
         public void Configure(EntityTypeBuilder<Book> builder)
         {
-            // Установка ключа
+
             builder.HasKey(b => b.Id);
 
-            // Установка свойства Title как обязательного (NOT NULL)
             builder.Property(b => b.Title)
                    .IsRequired()
                    .HasMaxLength(200);
 
-            // Установка свойства ISBN как обязательного и уникального
             builder.Property(b => b.ISBN)
                    .IsRequired()
                    .HasMaxLength(13);
@@ -24,8 +22,7 @@ namespace Library.DataAccess.Configuration
             builder.HasIndex(b => b.ISBN)
                    .IsUnique();
 
-            // Конфигурация связи "многие к одному" с автором
-            builder.HasOne(b => b.Author) // Указываем навигационное свойство
+            builder.HasOne(b => b.Author) 
                    .WithMany(a => a.Books)
                    .HasForeignKey(b => b.AuthorId);
         }

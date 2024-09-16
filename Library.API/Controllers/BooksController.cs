@@ -38,9 +38,10 @@ namespace Library.API.Controllers
             var book = await _booksService.GetBook(id);
             if (book == null)
             {
-                return NotFound(); // 404 Not Found if the book is not found
+                return NotFound(); 
             }
-            return Ok(book);
+            var result = _mapper.Map<BookReadDto>(book);
+            return Ok(result);
         }
 
         [HttpGet("isbn/{isbn}")]
@@ -50,24 +51,24 @@ namespace Library.API.Controllers
             var book = await _booksService.GetBookByISBN(isbn);
             if (book == null)
             {
-                return NotFound(); // 404 Not Found if the book is not found
+                return NotFound();
             }
             return Ok(book);
         }
 
-        // POST api/books
+       
         [HttpPost]
         public async Task<ActionResult<Guid>> AddBook([FromBody] BookCreateDto bookCreateDto)
         {
             if (bookCreateDto == null)
             {
-                return BadRequest("Book cannot be null."); // 400 Bad Request if the book is null
+                return BadRequest("Book cannot be null."); 
             }
 
-            var book = _mapper.Map<Book>(bookCreateDto); // Маппинг DTO в сущность Author
+            var book = _mapper.Map<Book>(bookCreateDto); 
             Console.WriteLine($"Контроллер {book.Id} {book.Title}");
             var id = await _booksService.AddBook(book);
-            return CreatedAtAction(nameof(GetBook), new { id = id }, id); // 201 Created with location of the new resource
+            return CreatedAtAction(nameof(GetBook), new { id = id }, id);
         }
 
         // PUT api/books/{id}
@@ -76,20 +77,20 @@ namespace Library.API.Controllers
         {
             if (id != book.Id)
             {
-                return BadRequest("ID mismatch."); // 400 Bad Request if ID in URL does not match ID in body
+                return BadRequest("ID mismatch."); 
             }
 
             var existingBook = await _booksService.GetBook(id);
             if (existingBook == null)
             {
-                return NotFound(); // 404 Not Found if the book does not exist
+                return NotFound();
             }
 
             await _booksService.UpdateBook(book);
-            return NoContent(); // 204 No Content indicating success
+            return NoContent(); 
         }
 
-        // DELETE api/books/{id}
+  
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteBook(Guid id)
         {
@@ -97,11 +98,11 @@ namespace Library.API.Controllers
             var existingBook = await _booksService.GetBook(id);
             if (existingBook == null)
             {
-                return NotFound(); // 404 Not Found if the book does not exist
+                return NotFound(); 
             }
 
             await _booksService.DeleteBook(id);
-            return NoContent(); // 204 No Content indicating success
+            return NoContent(); 
         }
     }
 }
