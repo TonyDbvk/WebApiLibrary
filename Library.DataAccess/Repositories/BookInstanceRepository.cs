@@ -15,7 +15,6 @@ namespace Library.DataAccess.Repositories
             _context = context;
         }
 
-        // Получение всех экземпляров книг с включением информации о книге и пользователе
         public async Task<List<BookInstance>> GetAll()
         {
             return await _context.BookInstances
@@ -24,7 +23,6 @@ namespace Library.DataAccess.Repositories
                         .ToListAsync();
         }
 
-        // Получение экземпляра книги по ID с включением информации о книге и пользователе
         public async Task<BookInstance> GetById(Guid id)
         {
             return await _context.BookInstances
@@ -33,7 +31,6 @@ namespace Library.DataAccess.Repositories
                         .FirstOrDefaultAsync(b => b.Id == id);
         }
 
-        // Добавление нового экземпляра книги
         public async Task<Guid> Add(BookInstance bookInstance)
         {
             _context.BookInstances.Add(bookInstance);
@@ -41,7 +38,6 @@ namespace Library.DataAccess.Repositories
             return bookInstance.Id;
         }
 
-        // Обновление экземпляра книги
         public async Task<Guid> Update(BookInstance bookInstance)
         {
             var existingBookInstance = await _context.BookInstances.FindAsync(bookInstance.Id);
@@ -55,7 +51,6 @@ namespace Library.DataAccess.Repositories
             return bookInstance.Id;
         }
 
-        // Удаление экземпляра книги
         public async Task<Guid> Delete(Guid id)
         {
             var bookInstance = await _context.BookInstances.FindAsync(id);

@@ -21,7 +21,6 @@ namespace Library.API.Controllers
             _mapper = mapper;
         }
 
-        // GET api/books
         [HttpGet]
         public async Task<ActionResult<List<Book>>> GetAllBooks()
         {
@@ -31,7 +30,6 @@ namespace Library.API.Controllers
             return Ok(result);
         }
 
-        // GET api/books/{id}
         [HttpGet("{id}")]
         public async Task<ActionResult<Book>> GetBook(Guid id)
         {
@@ -72,7 +70,6 @@ namespace Library.API.Controllers
             return CreatedAtAction(nameof(GetBook), new { id = id }, id);
         }
 
-        // PUT api/books/{id}
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateBook(Guid id, [FromBody] BookCreateDto bookCreateDto)
         {

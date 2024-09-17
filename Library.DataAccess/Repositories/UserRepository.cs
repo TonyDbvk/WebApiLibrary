@@ -53,7 +53,6 @@ namespace Library.DataAccess.Repositories
                 return false;
             }
 
-            // Обновление нужных полей
             existingUser.FirstName = user.FirstName;
             existingUser.LastName = user.LastName;
             existingUser.Email = user.Email;

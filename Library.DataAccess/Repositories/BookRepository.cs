@@ -29,7 +29,7 @@ namespace Library.DataAccess.Repositories
         public async Task<List<Book>> GetAll()
         {
             return await _context.Books
-                        .Include(b => b.Author) // включение данных об авторе
+                        .Include(b => b.Author) 
                         .ToListAsync();
         }
 

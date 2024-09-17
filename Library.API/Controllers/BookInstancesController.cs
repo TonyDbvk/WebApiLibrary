@@ -18,7 +18,7 @@ namespace Library.API.Controllers
             _mapper = mapper;
         }
 
-        // GET api/bookinstances
+  
         [HttpGet]
         public async Task<ActionResult<List<BookInstanceReadDto>>> GetAllBookInstances()
         {
@@ -27,7 +27,6 @@ namespace Library.API.Controllers
             return Ok(result);
         }
 
-        // GET api/bookinstances/{id}
         [HttpGet("{id}")]
         public async Task<ActionResult<BookInstanceReadDto>> GetBookInstance(Guid id)
         {
@@ -41,7 +40,6 @@ namespace Library.API.Controllers
             return Ok(result);
         }
 
-        // POST api/bookinstances
         [HttpPost]
         public async Task<ActionResult<Guid>> AddBookInstance([FromBody] BookInstanceCreateDto bookInstanceCreateDto)
         {
@@ -55,7 +53,6 @@ namespace Library.API.Controllers
             return CreatedAtAction(nameof(GetBookInstance), new { id = id }, id);
         }
 
-        // PUT api/bookinstances/{id}
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateBookInstance(Guid id, [FromBody] BookInstanceCreateDto bookInstanceCreateDto)
         {
@@ -71,7 +68,6 @@ namespace Library.API.Controllers
             return NoContent();
         }
 
-        // DELETE api/bookinstances/{id}
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteBookInstance(Guid id)
         {

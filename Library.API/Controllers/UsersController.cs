@@ -100,7 +100,6 @@ namespace Library.API.Controllers
             return Ok(result);
         }
 
-        // PUT: api/users/{id}
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateUser(Guid id, [FromBody] User user)
         {
@@ -120,9 +119,6 @@ namespace Library.API.Controllers
             }
         }
 
-
-
-        // DELETE: api/users/{id}
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteUser(Guid id)
         {
