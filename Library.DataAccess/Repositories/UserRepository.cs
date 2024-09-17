@@ -66,6 +66,8 @@ namespace Library.DataAccess.Repositories
         public async Task<List<BookInstance>> GetBookInstancesByUserIdAsync(Guid id)
         {
             return await _context.BookInstances
+                .Include(bi=> bi.Book)
+                .ThenInclude(b =>b.Author)
                 .Where(bi => bi.UserId == id)
                 .ToListAsync();
         }
