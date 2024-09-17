@@ -2,6 +2,7 @@ using AutoMapper;
 using Library.API.DTOs.AuthorDtos;
 using Library.API.DTOs.BookDtos;
 using Library.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 namespace Library.API.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class BooksController : ControllerBase
     {
@@ -55,37 +57,76 @@ namespace Library.API.Controllers
             return Ok(result);
         }
 
-       
+
         [HttpPost]
-        public async Task<ActionResult<Guid>> AddBook([FromBody] BookCreateDto bookCreateDto)
+        public async Task<ActionResult<Guid>> AddBook([FromForm] BookCreateDto bookCreateDto, IFormFile imageFile)
         {
             if (bookCreateDto == null)
             {
-                return BadRequest("Book cannot be null."); 
+                return BadRequest("Book cannot be null.");
             }
 
-            var book = _mapper.Map<Book>(bookCreateDto); 
-            Console.WriteLine($"Контроллер {book.Id} {book.Title}");
+            var book = _mapper.Map<Book>(bookCreateDto);
+
+            // Обработка изображения
+            if (imageFile != null)
+            {
+                book.ImageUrl = await SaveImageFileAsync(imageFile);
+            }
+
             var id = await _booksService.AddBook(book);
             return CreatedAtAction(nameof(GetBook), new { id = id }, id);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateBook(Guid id, [FromBody] BookCreateDto bookCreateDto)
+        public async Task<ActionResult> UpdateBook(Guid id, [FromForm] BookCreateDto bookCreateDto, IFormFile imageFile)
         {
-
             var existingBook = await _booksService.GetBook(id);
             if (existingBook == null)
             {
                 return NotFound();
             }
+
             var book = _mapper.Map<Book>(bookCreateDto);
             book.Id = existingBook.Id;
+
+            // Обработка изображения
+            if (imageFile != null)
+            {
+                book.ImageUrl = await SaveImageFileAsync(imageFile);
+            }
+            else
+            {
+                // Если изображение не было передано, оставляем старый путь
+                book.ImageUrl = existingBook.ImageUrl;
+            }
+
             await _booksService.UpdateBook(book);
-            return NoContent(); 
+            return NoContent();
         }
 
-  
+
+        private async Task<string> SaveImageFileAsync(IFormFile imageFile)
+        {
+            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/books");
+            if (!Directory.Exists(uploadsFolder))
+            {
+                Directory.CreateDirectory(uploadsFolder);
+            }
+
+            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(imageFile.FileName)}";
+            var filePath = Path.Combine(uploadsFolder, fileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await imageFile.CopyToAsync(stream);
+            }
+
+            return $"/images/books/{fileName}";
+        }
+
+
+
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteBook(Guid id)
         {

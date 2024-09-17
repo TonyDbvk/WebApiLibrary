@@ -9,7 +9,6 @@ namespace Library.API.DTOs.AuthorDtos
         public string LastName { get; set; }
         public DateOnly DateOfBirth { get; set; }
         public string Country { get; set; }
-
         public List<string> Books { get; set; }
     }
 

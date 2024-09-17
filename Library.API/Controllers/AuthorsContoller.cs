@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Library.API.DTOs.AuthorDtos;
 using Library.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using static System.Reflection.Metadata.BlobBuilder;
 namespace Library.API.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class AuthorsController : ControllerBase
     {
