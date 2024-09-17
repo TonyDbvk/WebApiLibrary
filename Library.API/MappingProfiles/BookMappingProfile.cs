@@ -2,6 +2,7 @@
 using Library.API.DTOs.AuthorDtos;
 using Library.API.DTOs.BookDtos;
 using Library.API.DTOs.BookInstanceDtos;
+using Library.API.DTOs.UserDtos;
 using Library.Domain.Models;
 
 namespace Library.API.MappingProfiles
@@ -32,7 +33,15 @@ namespace Library.API.MappingProfiles
 
             // Преобразование из BookInstanceCreateDto в BookInstance
             CreateMap<BookInstanceCreateDto, BookInstance>();
-            CreateMap<BookInstanceUpdateDto, BookInstance>();
+
+            CreateMap<User, UserRead>()
+          .ForMember(dest => dest.BookInstances, opt => opt.MapFrom(src => src.BookInstances));
+
+            // Маппинг для BookInstance -> UserBookInstance
+            CreateMap<BookInstance, UserBookInstance>()
+                .ForMember(dest => dest.BookTitle, opt => opt.MapFrom(src => src.Book.Title))
+                .ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src => $"{src.Book.Author.FirstName} {src.Book.Author.LastName}"));
+
 
         }
     }

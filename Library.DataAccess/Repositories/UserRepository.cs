@@ -17,12 +17,20 @@ namespace Library.DataAccess.Repositories
 
         public async Task<List<User>> GetAllAsync()
         {
-            return await _context.Users.Include(u=> u.BookInstances).ToListAsync();
+            return await _context.Users
+                .Include(u=> u.BookInstances)
+                .ThenInclude(bi => bi.Book)
+                .ThenInclude(bi => bi.Author)
+                .ToListAsync();
         }
 
         public async Task<User> GetByIdAsync(Guid id)
         {
-            return await _context.Users.FindAsync(id);
+            return await _context.Users
+                .Include(u => u.BookInstances)
+                .ThenInclude(bi => bi.Book)
+                .ThenInclude(bi => bi.Author)
+                .FirstOrDefaultAsync(i => i.Id == id);
         }
 
         public async Task<User> GetByUsernameAsync(string username)

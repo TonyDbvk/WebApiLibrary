@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 using Library.API.DTOs;
+using AutoMapper;
+using Library.API.DTOs.UserDtos;
+using Library.API.DTOs.BookInstanceDtos;
 
 namespace Library.API.Controllers
 {
@@ -14,10 +17,11 @@ namespace Library.API.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
-
-        public UsersController(IUserService userService)
+        private readonly IMapper _mapper;
+        public UsersController(IUserService userService,IMapper mapper)
         {
             _userService = userService;
+            _mapper = mapper;
         }
 
         [HttpPost("register")]
@@ -64,7 +68,9 @@ namespace Library.API.Controllers
             var users = await _userService.GetAllUsersAsync();
             if (users == null ) return NotFound();
 
-            return Ok(users);   
+            var result = _mapper.Map<List<UserRead>>(users);
+
+            return Ok(result);   
         }
 
 
@@ -77,6 +83,21 @@ namespace Library.API.Controllers
                 return NotFound(); 
             }
             return Ok(user);
+        }
+
+        [HttpGet("bookinstance/{id}")]
+        public async Task<ActionResult<List<UserBookInstance>>> GetUserBookInstanceById(Guid id)
+        {
+            var user = await _userService.GetUserByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+
+            var result = _mapper.Map<List<UserBookInstance>>(user.BookInstances);
+
+            return Ok(result);
         }
 
         // PUT: api/users/{id}
