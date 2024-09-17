@@ -20,6 +20,10 @@
     <ProjectReference Include="..\Library.Application\Library.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\books\" />
+  </ItemGroup>
+
 
 
 </Project>
