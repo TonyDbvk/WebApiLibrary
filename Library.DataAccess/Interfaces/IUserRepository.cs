@@ -10,6 +10,7 @@ namespace Library.DataAccess.Repositories
         Task<List<User>> GetAllAsync();
         Task<User> GetByIdAsync(Guid id);
         Task<User> GetByUsernameAsync(string username);
+        Task<List<BookInstance>> GetBookInstancesByUserIdAsync(Guid id);
         Task<Guid> AddAsync(User user);
         Task<bool> UpdateAsync(User user);
         Task<bool> DeleteAsync(Guid id);

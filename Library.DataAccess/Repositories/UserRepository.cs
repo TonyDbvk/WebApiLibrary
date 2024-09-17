@@ -63,6 +63,13 @@ namespace Library.DataAccess.Repositories
             return true;
         }
 
+        public async Task<List<BookInstance>> GetBookInstancesByUserIdAsync(Guid id)
+        {
+            return await _context.BookInstances
+                .Where(bi => bi.UserId == id)
+                .ToListAsync();
+        }
+
         public async Task<bool> DeleteAsync(Guid id)
         {
             var user = await _context.Users.FindAsync(id);

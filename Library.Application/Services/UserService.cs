@@ -5,6 +5,7 @@ using Library.DataAccess.Repositories;
 using Library.Domain.Models;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -41,6 +42,10 @@ namespace Library.Application.Services
             return await _userRepository.GetByUsernameAsync(username);
         }
 
+        public async Task<List<BookInstance>> GetBookInstancesByUserIdAsync(Guid id)
+        {
+            return await _userRepository.GetBookInstancesByUserIdAsync(id);
+        }
         public async Task<Guid> RegisterUserAsync(string username, string password, string firstName, string lastName,string email)
         {
             var user = new User
@@ -62,7 +67,6 @@ namespace Library.Application.Services
                 throw new Exception("User registration failed: " + string.Join(", ", result.Errors.Select(e => e.Description)));
             }
         }
-
         public async Task<string> GenerateJwtTokenAsync(string username, string password)
         {
             var user = await _userManager.FindByNameAsync(username);

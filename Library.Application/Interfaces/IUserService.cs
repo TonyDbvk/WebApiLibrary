@@ -9,6 +9,7 @@ namespace Library.Application.Interfaces
         Task<List<User>> GetAllUsersAsync();
         Task<User> GetUserByIdAsync(Guid id);
         Task<User> GetUserByUsernameAsync(string username);
+        Task<List<BookInstance>> GetBookInstancesByUserIdAsync(Guid id);
         Task<Guid> RegisterUserAsync(string username, string password, string firstName, string lastName,string email);
         Task<bool> UpdateUserAsync(User user);
         Task<string> GenerateJwtTokenAsync(string username, string password);

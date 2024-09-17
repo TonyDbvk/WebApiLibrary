@@ -88,14 +88,13 @@ namespace Library.API.Controllers
         [HttpGet("bookinstance/{id}")]
         public async Task<ActionResult<List<UserBookInstance>>> GetUserBookInstanceById(Guid id)
         {
-            var user = await _userService.GetUserByIdAsync(id);
-            if (user == null)
+            var bookInstances = await _userService.GetBookInstancesByUserIdAsync(id);
+            if (bookInstances == null)
             {
                 return NotFound();
             }
 
-
-            var result = _mapper.Map<List<UserBookInstance>>(user.BookInstances);
+            var result = _mapper.Map<List<UserBookInstance>>(bookInstances);
 
             return Ok(result);
         }

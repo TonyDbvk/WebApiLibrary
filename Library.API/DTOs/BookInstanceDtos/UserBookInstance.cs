@@ -6,7 +6,5 @@
         public string AuthorName { get; set; }
         public DateTime BorrowedAt { get; set; } 
         public DateTime ReturnBy { get; set; }   
-
     }
-
 }
