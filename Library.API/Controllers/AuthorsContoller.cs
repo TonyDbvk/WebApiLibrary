@@ -11,7 +11,7 @@ using static System.Reflection.Metadata.BlobBuilder;
 namespace Library.API.Controllers
 {
     [ApiController]
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     public class AuthorsController : ControllerBase
     {

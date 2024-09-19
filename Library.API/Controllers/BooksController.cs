@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Library.API.Controllers
 {
     [ApiController]
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     public class BooksController : ControllerBase
     {
