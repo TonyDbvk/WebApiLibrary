@@ -12,6 +12,6 @@ namespace Library.Application.Interfaces
         Task<List<BookInstance>> GetBookInstancesByUserIdAsync(Guid id);
         Task<Guid> RegisterUserAsync(string username, string password, string firstName, string lastName,string email);
         Task<bool> UpdateUserAsync(User user);
-        Task<string> GenerateJwtTokenAsync(string username, string password);
+        Task<(string token, Guid userId)> GenerateJwtTokenAsync(string username, string password);
     }
 }

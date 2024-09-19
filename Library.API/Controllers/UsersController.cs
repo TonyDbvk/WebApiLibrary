@@ -54,8 +54,8 @@ namespace Library.API.Controllers
 
             try
             {
-                var token = await _userService.GenerateJwtTokenAsync(request.Username, request.Password);
-                return Ok(new { token });
+                var (token, userId) = await _userService.GenerateJwtTokenAsync(request.Username, request.Password);
+                return Ok(new { token, userId });
             }
             catch (Exception ex)
             {

@@ -46,7 +46,7 @@ namespace Library.Application.Services
         {
             return await _userRepository.GetBookInstancesByUserIdAsync(id);
         }
-        public async Task<Guid> RegisterUserAsync(string username, string password, string firstName, string lastName,string email)
+        public async Task<Guid> RegisterUserAsync(string username, string password, string firstName, string lastName, string email)
         {
             var user = new User
             {
@@ -67,7 +67,7 @@ namespace Library.Application.Services
                 throw new Exception("User registration failed: " + string.Join(", ", result.Errors.Select(e => e.Description)));
             }
         }
-        public async Task<string> GenerateJwtTokenAsync(string username, string password)
+        public async Task<(string token, Guid userId)> GenerateJwtTokenAsync(string username, string password)
         {
             var user = await _userManager.FindByNameAsync(username);
             if (user == null || !await _userManager.CheckPasswordAsync(user, password))
@@ -76,26 +76,25 @@ namespace Library.Application.Services
             }
 
 
-            // Создаем claims для токена
             var claims = new List<Claim>
-    {
-        new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-        new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
-        new Claim(ClaimTypes.Name, user.UserName)
-    };
+                {
+                    new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                    new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
+                    new Claim(ClaimTypes.Name, user.UserName)
+                };
 
-            // Создаем токен
             var jwt = new JwtSecurityToken(
                 issuer: AuthOptions.ISSUER,
                 audience: AuthOptions.AUDIENCE,
-            
                 claims: claims,
                 expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(10)),
                 signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
 
-            // Кодируем токен в строку
-            return new JwtSecurityTokenHandler().WriteToken(jwt);
+            var token = new JwtSecurityTokenHandler().WriteToken(jwt);
+
+            return (token, user.Id);
         }
+
 
         //public async Task<bool> AuthenticateUserAsync(string username, string password)
         //{
