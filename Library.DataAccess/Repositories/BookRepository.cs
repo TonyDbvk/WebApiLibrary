@@ -8,7 +8,7 @@ using Library.Domain.Models;
 using Library.DataAccess.Interfaces;
 namespace Library.DataAccess.Repositories
 {
- 
+
 
     public class BookRepository : IBookRepository
     {
@@ -19,17 +19,10 @@ namespace Library.DataAccess.Repositories
             _context = context;
         }
 
-        public async Task<Guid> Add(Book book)
-        {
-            _context.Books.Add(book);
-            await _context.SaveChangesAsync();
-            return book.Id;
-        }
-
         public async Task<List<Book>> GetAll()
         {
             return await _context.Books
-                        .Include(b => b.Author) 
+                        .Include(b => b.Author)
                         .ToListAsync();
         }
 
@@ -41,6 +34,13 @@ namespace Library.DataAccess.Repositories
         public async Task<Book> GetByISBN(string isbn)
         {
             return await _context.Books.FirstOrDefaultAsync(b => b.ISBN == isbn);
+        }
+
+        public async Task<Guid> Add(Book book)
+        {
+            _context.Books.Add(book);
+            await _context.SaveChangesAsync();
+            return book.Id;
         }
 
         public async Task<Guid> Update(Book book)

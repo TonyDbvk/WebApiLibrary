@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Net;
 
 namespace Library.API.Middlewares
 {
@@ -26,27 +28,40 @@ namespace Library.API.Middlewares
         public Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             context.Response.ContentType = "application/json";
-            if (exception is UnauthorizedAccessException)
-            {
-                context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-            }
-            else if (exception is ArgumentException)
-            {
-                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-            }
-            else
-            {
-                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            }
+
+            var statusDetails = GetStatusDetails(exception);
+
+            context.Response.StatusCode = (int)statusDetails.StatusCode;
 
             var response = new
             {
-                StatusCode = context.Response.StatusCode,
-                Message = exception.Message,
-                Detailed = exception.StackTrace // если не прод 
+                Title = statusDetails.Title,
+                Status= context.Response.StatusCode,
+                Detail = exception.Message
             };
 
             return context.Response.WriteAsJsonAsync(response);
         }
+
+        private (HttpStatusCode StatusCode, string Title) GetStatusDetails(Exception exception)
+        {
+            return exception switch
+            {
+                UnauthorizedAccessException _ => GetStatusDetailsByStatusCode(HttpStatusCode.Unauthorized),
+                ArgumentException _ => GetStatusDetailsByStatusCode(HttpStatusCode.BadRequest),
+                NullReferenceException _ => GetStatusDetailsByStatusCode(HttpStatusCode.NotFound),
+                TimeoutException _ => GetStatusDetailsByStatusCode(HttpStatusCode.GatewayTimeout),
+                IndexOutOfRangeException _ => GetStatusDetailsByStatusCode(HttpStatusCode.BadRequest),
+                DbUpdateConcurrencyException _ => GetStatusDetailsByStatusCode(HttpStatusCode.Conflict),
+                DbUpdateException _ => GetStatusDetailsByStatusCode(HttpStatusCode.InternalServerError),
+                _ => GetStatusDetailsByStatusCode(HttpStatusCode.InternalServerError)// по умолчанию
+            };
+        }
+
+        private (HttpStatusCode StatusCode, string Title) GetStatusDetailsByStatusCode(HttpStatusCode httpStatusCode)
+        {
+            return (httpStatusCode, httpStatusCode.ToString());
+        }
+
     }
 }
