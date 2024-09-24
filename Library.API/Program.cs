@@ -1,5 +1,5 @@
-
 using Library.API.MappingProfiles;
+using Library.API.Middlewares;
 using Library.Application.Interfaces;
 using Library.Application.Services;
 using Library.Application.Services.Auth;
@@ -75,6 +75,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseExceptionHandlerMiddleware(); // глобальный Middleware
 
 app.UseHttpsRedirection();
 
